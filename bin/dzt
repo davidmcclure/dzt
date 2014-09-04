@@ -11,13 +11,15 @@ default_command :slice
 desc "Slice an image"
 command :slice do |c|
   c.flag [:o, :output], desc: 'Output folder', default_value: File.join(Dir.pwd, "tiles")
+  c.flag [:q, :qualty], desc: 'Image quality', default_value: 75
   c.action do |global_options, options, args|
     if args.length < 1
       raise 'You must specify an image file to slice.'
     end
     tiler = DZT::Tiler.new(
       source: args[0],
-      destination: options[:output]
+      destination: options[:output],
+      quality: options[:quality]
     )
     tiler.slice! do |path|
       puts path
