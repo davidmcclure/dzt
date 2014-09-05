@@ -26,7 +26,7 @@ module DZT
       @tile_format  = options[:format] || DEFAULT_TILE_FORMAT
       @max_tiled_height = @tile_source.rows
       @max_tiled_width = @tile_source.columns
-      @tile_quality = options[:quality] || DEFAULT_QUALITY
+      @tile_quality = options[:quality].to_i || DEFAULT_QUALITY
       @overwrite = options[:overwrite] || false
       @destination = options[:destination] || File.join(Dir.pwd, "tiles")
     end
@@ -119,7 +119,7 @@ module DZT
 
       # The crop method retains the offset information in the cropped image.
       # To reset the offset data, adding true as the last argument to crop.
-      cropped = img.crop(x, y, width, height, true)
+      cropped = img.crop(x, y, width, height, true).unsharp_mask(0, 1.5, 1, 0.1)
       cropped.write(dest) { @quality = quality }
     end
   end
